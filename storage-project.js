@@ -4,16 +4,24 @@ window.addEventListener("DOMContentLoaded", (event) => {
   const quantityValues = document.getElementById('quantity')
 
   const clearbutton = () => {
-    const shoppingCartHead = document.getElementById("shopping-cart")
     const clearbutton = document.createElement('button')
+    const shoppingCartHead = document.getElementById("shopping-cart")
     clearbutton.innerText = 'Clear Cart'
-    shoppingCartHead.appendChild(clearbutton)
+    if (Object.keys(localStorage).length > 0) {
+      shoppingCartHead.appendChild(clearbutton)
+      return clearbutton
+    }
     return clearbutton
+
   }
 
   const renderCart = () => {
     clearbutton().addEventListener(('click'), () => {
       unorderedList.innerHTML = ''
+      for (key in localStorage) {
+        localStorage.removeItem(key)
+        clearbutton()
+      }
     })
     const items = Object.keys(localStorage)
     const amount = Object.values(localStorage)
@@ -38,7 +46,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
 
   addToCartButton.addEventListener('click', event => {
     localStorage.setItem(itemValues.value, quantityValues.value)
-
+    clearbutton()
   })
 
 
